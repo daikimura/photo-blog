@@ -1,0 +1,33 @@
+baseURL = "https://photo.flyingapp.jp/"
+languageCode = "ja"
+title = "photo@flyingapp"
+
+# Hugo Theme Gallery をモジュールとしてインポート
+[module]
+  [[module.imports]]
+    path = "github.com/nicokaiser/hugo-theme-gallery/v4"
+
+# ページネーション
+[pagination]
+  pagerSize = 20
+
+# パラメータ設定
+[params]
+  description = "FLYING App Photo Library"
+
+  # ダークモード設定
+  # colorScheme = "dark"
+
+# マークダウン設定
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+# 日本語対応
+hasCJKLanguage = true
+summaryLength = 70
+
+# タクソノミー
+[taxonomies]
+  category = "categories"

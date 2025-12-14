@@ -1,0 +1,37 @@
+{{ define "main" }}
+  {{ partial "title.html" . }}
+
+  <div class="article-meta">
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年1月2日" }}</time>
+    {{ with .Params.categories }}
+      <span class="categories">
+        {{ range . }}<a href="{{ "/categories/" | relURL }}{{ . | urlize }}/">{{ . }}</a>{{ end }}
+      </span>
+    {{ end }}
+  </div>
+
+  {{/* アイキャッチ画像を2:1で表示 */}}
+  {{ $covers := where (.Resources.ByType "image") "Params.cover" "eq" true }}
+  {{ $images := where (.Resources.ByType "image") "Params.hidden" "ne" true }}
+  {{ $cover := "" }}
+  {{ if gt (len $covers) 0 }}
+    {{ $cover = index $covers 0 }}
+  {{ else if gt (len $images) 0 }}
+    {{ $cover = index $images 0 }}
+  {{ end }}
+
+  {{ if $cover }}
+    {{ $featured := $cover.Filter (slice images.AutoOrient (images.Process "fill 1600x800")) }}
+    <section class="featured-image">
+      <img src="{{ $featured.RelPermalink }}" alt="{{ .Title }}" loading="lazy">
+    </section>
+  {{ end }}
+
+  {{ with .Content }}
+    <section class="prose">
+      {{ . }}
+    </section>
+  {{ end }}
+
+  {{ partial "related.html" . }}
+{{ end }}
