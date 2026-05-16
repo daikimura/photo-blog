@@ -1,8 +1,17 @@
+{{- $src := .Destination | safeURL }}
+{{- $width := 0 }}
+{{- $height := 0 }}
+{{- with .Page.Resources.GetMatch .Destination }}
+  {{- $resized := .Filter (slice images.AutoOrient (images.Process "fit 1024x1024")) }}
+  {{- $src = $resized.RelPermalink }}
+  {{- $width = $resized.Width }}
+  {{- $height = $resized.Height }}
+{{- end }}
 {{- if .Text }}
 <figure>
-  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy">
+  <img src="{{ $src }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $width }} width="{{ $width }}" height="{{ $height }}"{{ end }} loading="lazy">
   <figcaption>{{ .Text }}</figcaption>
 </figure>
 {{- else }}
-<img src="{{ .Destination | safeURL }}" alt=""{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy">
+<img src="{{ $src }}" alt=""{{ with .Title }} title="{{ . }}"{{ end }}{{ if $width }} width="{{ $width }}" height="{{ $height }}"{{ end }} loading="lazy">
 {{- end }}
